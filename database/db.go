@@ -30,7 +30,7 @@ func ConnectDB() {
 	log.Println("Connected to the database!")
 
 	// Auto-migrate tables
-	db.AutoMigrate(&models.Load{}) // still valid — GORM will add the new column
+	db.AutoMigrate(&models.Load{}, &models.LoadClaim{}, &models.User{})
 	if err != nil {
 		log.Fatal("Failed auto-migrating:", err)
 	}
