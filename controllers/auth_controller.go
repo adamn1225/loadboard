@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"os"
-	"time"
-
 	"loadboard/database"
 	"loadboard/models"
+	"os"
+	"strings"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
@@ -16,13 +16,15 @@ func Register(c *fiber.Ctx) error {
 	type Request struct {
 		Email    string `json:"email"`
 		Password string `json:"password"`
-		Role     string `json:"role"` // "carrier" or "broker"
+		Role     string `json:"role"`
 	}
 
 	var body Request
 	if err := c.BodyParser(&body); err != nil {
 		return c.Status(400).JSON(fiber.Map{"error": "Invalid input"})
 	}
+
+	body.Email = strings.ToLower(body.Email) //
 
 	// Hash password
 	hash, err := bcrypt.GenerateFromPassword([]byte(body.Password), 12)
@@ -54,6 +56,8 @@ func Login(c *fiber.Ctx) error {
 	if err := c.BodyParser(&body); err != nil {
 		return c.Status(400).JSON(fiber.Map{"error": "Invalid input"})
 	}
+
+	body.Email = strings.ToLower(body.Email) //
 
 	var user models.User
 	result := database.DB.Where("email = ?", body.Email).First(&user)

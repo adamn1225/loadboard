@@ -15,10 +15,9 @@ type Load struct {
 	Pickup      string         `json:"pickup"`
 	Dropoff     string         `json:"dropoff"`
 	Date        time.Time      `json:"date"`
-	CreatedBy   uint           `json:"created_by"` // FK to User
+	CreatedBy   uint           `json:"created_by"`
 	CreatedAt   time.Time      `json:"created_at"`
 	UpdatedAt   time.Time      `json:"updated_at"`
 	DeletedAt   gorm.DeletedAt `gorm:"index" json:"-"`
-	Status      string         `json:"status" gorm:"default:open"` // open, claimed, delivered
-
+	Status      string         `json:"status" gorm:"default:open"`
 }
